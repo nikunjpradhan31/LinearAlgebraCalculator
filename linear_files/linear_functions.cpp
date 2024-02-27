@@ -16,6 +16,18 @@ Matrix::Matrix() : r(1), c(1)
   Matrix::matrix[Matrix::r][Matrix::c] = 1;
 }
 
+Matrix::~Matrix()
+{
+  for(int i = 0;i<r;i++)
+  {
+    delete [] matrix[i];
+  }
+  delete [] matrix;
+  matrix = nullptr;
+  r = 0;
+  c = 0;
+}
+
 double** Matrix::getmatrix() const
 {
  return Matrix::matrix;
