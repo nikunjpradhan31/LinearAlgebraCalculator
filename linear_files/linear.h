@@ -6,6 +6,7 @@ class Matrix
   public:
 	Matrix(int r, int c);
 	Matrix();
+	~Matrix();
 	void fill_matrix();
 	void display_matrix();
 	void transpose_matrix();
