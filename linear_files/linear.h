@@ -9,6 +9,7 @@ class Matrix
 	~Matrix();
 	void fill_matrix();
 	void display_matrix();
+	void display_matrix(Matrix const& other);
 	void transpose_matrix();
 	double** getmatrix() const;
 	int getrows() const;
@@ -18,9 +19,10 @@ class Matrix
         Matrix operator-(Matrix const& other);
         Matrix operator*(Matrix const& other);
 	bool switch_rows(int const& pivotRow, Matrix& other);
-	void rref(Matrix& other);
+	void Gauss_Jordan(Matrix& other);
 	void subtract_rows(int const& targetRow, int const& pivotRow, double const& scaler, double const rowContent[], Matrix& other);
 	void scale_down_row(int const& row, double const& scaler, Matrix& other);
+	bool row_consistant(int row, Matrix const& other);
   private:
 	int r;
 	int c;

@@ -32,10 +32,12 @@ double** Matrix::getmatrix() const
 {
  return Matrix::matrix;
 }
+
 int Matrix::getrows() const
 {
  return Matrix::r;
 }
+
 int Matrix::getcols() const
 {
  return Matrix::c;
@@ -54,7 +56,6 @@ void Matrix::fill_matrix()
 
 }
 
-
 void Matrix::display_matrix()
 {
   std::cout<<"\n";
@@ -67,6 +68,19 @@ void Matrix::display_matrix()
     std::cout<<"\n";
   }
 
+}
+
+void Matrix::display_matrix(Matrix const& other)
+{
+    std::cout<<"\n";
+  for(int x = 0; x < r; x++)
+  {
+    for(int y = 0; y < c; y++)
+    {
+      std::cout<<matrix[x][y]<< " ";
+    }
+    std::cout<<"| "<<other.getmatrix()[x][0]<<"\n";
+  }
 }
 
 void Matrix::transpose_matrix()
@@ -84,8 +98,6 @@ void Matrix::transpose_matrix()
   *this = tmp;
 
 }
-
-
 
 Matrix Matrix::operator+(Matrix const& other)
 {//
@@ -128,7 +140,6 @@ Matrix Matrix::operator-(Matrix const& other)
    return Matrix();
   }//
 }//
-
 
 Matrix Matrix::operator*(Matrix const& other)
 {//
@@ -175,7 +186,8 @@ void Matrix::operator=(Matrix const& other)
     }
   }
 }
-void Matrix::rref(Matrix& other) {
+
+void Matrix::Gauss_Jordan(Matrix& other) {
   double **temp;
   temp = new double*[r];
   for(int i = 0; i<r;i++)
@@ -202,6 +214,12 @@ void Matrix::rref(Matrix& other) {
   double row[c];
   for(int x = 0; x < r; ++x)
   {
+    if(!row_consistant(x,other))
+    {
+      std::cout<<"\nThe system is inconsistant"<<std::endl;
+      return;
+    }
+
     if(matrix[x][x] == 0)
     {
       bool swapped = switch_rows(x, other);
@@ -221,10 +239,13 @@ void Matrix::rref(Matrix& other) {
         subtract_rows(i, x, scale, row, other);
       }
     }
+    display_matrix(other);
     }
+  display_matrix(other);
+  std::cout<<"\n";
   for(int i = 0; i < other.getrows(); i++)
    std::cout<<"x"<<i+1<<": "<<removeNegativeZero(other.getmatrix()[i][0])<<" ";
-  std::cout<<std::endl;
+  std::cout<<"\n"<<std::endl;
     for(int i = 0; i < r; i++) {
         for(int j = 0; j < c; j++) {
             matrix[i][j] = temp[i][j];
@@ -273,10 +294,23 @@ bool Matrix::switch_rows(int const& pivotRow, Matrix& other) {
     return false;
 }
 
+bool Matrix::row_consistant(int row, Matrix const& other)
+{
+  if(other.getmatrix()[row][0] != 0)
+  {
+    for(int x = 0; x<c; x++)
+    {
+      if(matrix[row][x] != 0)
+        return true;
+    }
+      return false;
+  }
+  return true;
+}
 
 double removeNegativeZero(double num) {
-    if (num == 0.0) {
-        return 0.0; // Return positive zero if input is zero
+    if (num == 0) {
+        return 0; // Return positive zero if input is zero
     }
     return num; // Return input number if it's not zero
 }
